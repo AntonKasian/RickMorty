@@ -22,12 +22,13 @@ class CharactersListVC: UIViewController {
         return collectionView
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         self.title = "Characters"
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backButton
         navigationController?.navigationBar.prefersLargeTitles = true
         view.addSubview(collectionView)
         setupCollectionView()
@@ -46,8 +47,6 @@ class CharactersListVC: UIViewController {
                 print("Error fetching characters: \(error)")
             }
         }
-
-        
     }
     
     func setupCollectionView() {
@@ -55,13 +54,29 @@ class CharactersListVC: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -25),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
         collectionView.showsVerticalScrollIndicator = false
+    }
+    
+    func loadCharacterInfoAndPushToView(selectedCharacter: Character) {
+        guard let imageUrl = URL(string: selectedCharacter.image) else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: imageUrl) { data, response, error in
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    let characterInfoView = CharacterInfo(characterName: selectedCharacter.name, characterImage: image, characterStatus: selectedCharacter.status)
+                    let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
+                    self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
+                }
+            }
+        }.resume()
     }
 }
 
@@ -77,38 +92,23 @@ extension CharactersListVC: UICollectionViewDelegateFlowLayout, UICollectionView
         let character = characters[indexPath.item]
         // Загрузка изображения из сети
         if let imageUrl = URL(string: character.image) {
-                URLSession.shared.dataTask(with: imageUrl) { data, response, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            cell.characterImageView.image = image
-                        }
-                    }
-                }.resume()
-            }
-            cell.characterNameLabel.text = character.name
-        
-        return cell
-    }
-    
-    // Переход на CharacterInfo
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCharacter = characters[indexPath.item]
-        
-        if let imageUrl = URL(string: selectedCharacter.image) {
             URLSession.shared.dataTask(with: imageUrl) { data, response, error in
                 if let data = data, let image = UIImage(data: data) {
                     DispatchQueue.main.async {
-                        let characterInfoView = CharacterInfo(characterName: selectedCharacter.name, characterImage: image)
-                        let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
-                        self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
+                        cell.characterImageView.image = image
                     }
                 }
             }.resume()
         }
+        cell.characterNameLabel.text = character.name
+        
+        return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCharacter = characters[indexPath.item]
+        loadCharacterInfoAndPushToView(selectedCharacter: selectedCharacter)
+    }
 }
-
 
 
