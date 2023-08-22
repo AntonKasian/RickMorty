@@ -12,14 +12,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        let window = UIWindow(frame: UIScreen.main.bounds)
+//        window.rootViewController = UINavigationController(rootViewController: ViewController())
+//        window.makeKeyAndVisible()
+//
+//        self.window = window
+//        return true
+//    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UINavigationController(rootViewController: ViewController())
-        window.makeKeyAndVisible()
-        
-        self.window = window
-        return true
-    }
+            window = UIWindow(frame: UIScreen.main.bounds)
+            let viewController = CharactersListVC()
+            let navigationController = UINavigationController(rootViewController: viewController)
+            
+            // Установите предпочитаемый стиль большого заголовка
+            navigationController.navigationBar.prefersLargeTitles = true
+            
+            window?.rootViewController = navigationController
+            window?.makeKeyAndVisible()
+            return true
+        }
 
     // MARK: UISceneSession Lifecycle
 
