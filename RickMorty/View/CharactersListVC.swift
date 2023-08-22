@@ -95,9 +95,17 @@ extension CharactersListVC: UICollectionViewDelegateFlowLayout, UICollectionView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCharacter = characters[indexPath.item]
         
-        let characterInfoView = CharacterInfo(characterName: selectedCharacter.name)
-        let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
-        navigationController?.pushViewController(characterInfoHostingController, animated: true)
+        if let imageUrl = URL(string: selectedCharacter.image) {
+            URLSession.shared.dataTask(with: imageUrl) { data, response, error in
+                if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        let characterInfoView = CharacterInfo(characterName: selectedCharacter.name, characterImage: image)
+                        let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
+                        self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
+                    }
+                }
+            }.resume()
+        }
     }
     
 }

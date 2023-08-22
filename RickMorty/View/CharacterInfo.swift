@@ -9,10 +9,24 @@ import SwiftUI
 
 struct CharacterInfo: View {
     
+    var characters: [Character] = []
     var characterName: String
+    var characterImage: UIImage?
     
     var body: some View {
-        Text("Character Name: \(characterName)")
+        ScrollView(.vertical, showsIndicators: false) {
+            if let image = characterImage {
+                Image(uiImage: image) // Используйте Image(uiImage:) для отображения UIImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(10)
+                    .frame(width: 148, height: 148)
+            }
+            Text("\(characterName)")
+                .font(.system(size: 25).bold())
+            Text("Alive")
+                .foregroundColor(.green)
+        }
     }
 }
 
