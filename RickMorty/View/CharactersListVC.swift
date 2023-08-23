@@ -33,23 +33,23 @@ class CharactersListVC: UIViewController {
     // MARK: - UI
     
     private func configureUI() {
-            view.backgroundColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
-            self.title = "Characters"
-            
-            let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            navigationItem.backBarButtonItem = backButton
-            
-            let appearanceWhite = UINavigationBarAppearance()
-            appearanceWhite.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.white
-            ]
-            
-            navigationController?.navigationBar.standardAppearance = appearanceWhite
-            navigationController?.navigationBar.prefersLargeTitles = true
-            
-            view.addSubview(collectionView)
-            setupCollectionView()
-        }
+        view.backgroundColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
+        self.title = "Characters"
+        
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backButton
+        
+        let appearanceWhite = UINavigationBarAppearance()
+        appearanceWhite.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearanceWhite
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        view.addSubview(collectionView)
+        setupCollectionView()
+    }
     
     func setupCollectionView() {
         NSLayoutConstraint.activate([
@@ -68,19 +68,19 @@ class CharactersListVC: UIViewController {
     // MARK: - Network
     
     private func fetchCharacters() {
-            networkManager.fetchCharacters { result in
-                switch result {
-                case .success(let characters):
-                    DispatchQueue.main.async {
-                        self.characters = characters
-                        self.collectionView.reloadData()
-                        print("Data is ok")
-                    }
-                case .failure(let error):
-                    print("Error fetching characters: \(error)")
+        networkManager.fetchCharacters { result in
+            switch result {
+            case .success(let characters):
+                DispatchQueue.main.async {
+                    self.characters = characters
+                    self.collectionView.reloadData()
+                    print("Data is ok")
                 }
+            case .failure(let error):
+                print("Error fetching characters: \(error)")
             }
         }
+    }
     
     func loadCharacterInfoAndPushToView(selectedCharacter: Character) {
         guard let imageUrl = URL(string: selectedCharacter.image) else {
@@ -93,7 +93,7 @@ class CharactersListVC: UIViewController {
                     let episodeURLs = selectedCharacter.episode.map { URL(string: $0) }
                     let episodeLoadGroup = DispatchGroup()
                     var episodes: [Episode] = []
-
+                    
                     for episodeURL in episodeURLs {
                         if let episodeURL = episodeURL {
                             episodeLoadGroup.enter()
@@ -110,19 +110,10 @@ class CharactersListVC: UIViewController {
                             }.resume()
                         }
                     }
-
+                    
                     episodeLoadGroup.notify(queue: DispatchQueue.main) {
-                        let characterInfoView = CharacterInfo(
-                            characterName: selectedCharacter.name,
-                            characterImage: image,
-                            characterStatus: selectedCharacter.status,
-                            characterSpecies: selectedCharacter.species,
-                            characterType: selectedCharacter.type,
-                            characterGender: selectedCharacter.gender,
-                            characterPlanet: selectedCharacter.location.name,
-                            characterPlanetType: selectedCharacter.location.type,
-                            episodes: episodes
-                        )
+                        let viewModel = CharacterInfoViewModel(character: selectedCharacter, image: image, episodes: episodes)
+                        let characterInfoView = CharacterInfoView(viewModel: viewModel)
                         let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
                         self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
                     }

@@ -7,44 +7,32 @@
 
 import SwiftUI
 
-struct CharacterInfo: View {
+struct CharacterInfoView: View {
     var backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
     var planetColor = #colorLiteral(red: 0.09615487605, green: 0.1091408804, blue: 0.1651378274, alpha: 1)
     
-    //MARK: Main
-    var characterName: String
-    var characterImage: UIImage?
-    var characterStatus: String
-    
-    //MARK: Info
-    var characterSpecies: String
-    var characterType: String?
-    var characterGender: String
-    
-    //MARK: Origin
-    var characterPlanet: String
-    var characterPlanetType: String?
-    
-    //MARK: Episodes
-    var episodes: [Episode] = []
+    @ObservedObject var viewModel: CharacterInfoViewModel
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            if let image = characterImage {
+            
+            // MARK: - Main
+            
+            if let image = viewModel.characterImage {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
                     .frame(width: 148, height: 148)
             }
-            Text("\(characterName)")
+            Text("\(viewModel.characterName)")
                 .font(.system(size: 25).bold())
                 .foregroundColor(.white)
-            if characterStatus == "Dead" {
-                Text(characterStatus)
+            if viewModel.characterStatus == "Dead" {
+                Text(viewModel.characterStatus)
                     .foregroundColor(.red)
             } else {
-                Text(characterStatus)
+                Text(viewModel.characterStatus)
                     .foregroundColor(.green)
             }
             
@@ -59,13 +47,13 @@ struct CharacterInfo: View {
                 cornerRadius: 10
             ) {
                 VStack(alignment: .leading, spacing: 10) {
-                    LabeledContent(label: "Species:", value: characterSpecies)
-                    if characterType == "" {
+                    LabeledContent(label: "Species:", value: viewModel.characterSpecies)
+                    if viewModel.characterType == "" {
                         LabeledContent(label: "Type:", value: "None")
                     } else {
-                        LabeledContent(label: "Type:", value: characterType ?? "None")
+                        LabeledContent(label: "Type:", value: viewModel.characterType ?? "None")
                     }
-                    LabeledContent(label: "Gender:", value: characterGender)
+                    LabeledContent(label: "Gender:", value: viewModel.characterGender)
                 }
                 .padding()
             }
@@ -86,9 +74,9 @@ struct CharacterInfo: View {
                     .padding(.trailing, 10)
                     
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(characterPlanet)
+                        Text(viewModel.characterPlanet)
                             .foregroundColor(.white)
-                        Text(characterPlanetType ?? "Planet")
+                        Text(viewModel.characterPlanetType ?? "Planet")
                             .foregroundColor(.green)
                             .font(.system(size: 14))
                     }
@@ -103,7 +91,7 @@ struct CharacterInfo: View {
                 .foregroundColor(.white)
                 .padding(.top)
             
-            ForEach(episodes) {episode in
+            ForEach(viewModel.episodes) {episode in
                 InfoRoundedRectangle(height: 80, cornerRadius: 10) {
                     VStack(alignment: .leading) {
                         Text(episode.name)
@@ -112,7 +100,7 @@ struct CharacterInfo: View {
                         HStack {
                             let episodeCode = episode.episode
                             let components = episodeCode.split(separator: "E")
-
+                            
                             if components.count == 2,
                                let seasonNumber = Int(components[0].dropFirst()),
                                let episodeNumber = Int(components[1]) {
@@ -134,10 +122,26 @@ struct CharacterInfo: View {
         }
         .background(Color(backColor))
     }
-
+    
     struct CharacterInfo_Previews: PreviewProvider {
         static var previews: some View {
-            CharacterInfo(characterName: "Rick", characterStatus: "Alive", characterSpecies: "Human", characterType: "None", characterGender: "Male", characterPlanet: "Earth", characterPlanetType: "Planet")
+            let originLocation = Location(name: "Earth", url: "", type: "Planet", dimension: "Dimension C-137")
+            let currentLocation = Location(name: "Earth", url: "", type: "Planet", dimension: "Dimension C-137")
+            
+            let sampleCharacter = Character(id: 1, name: "Rick",
+                                            status: "Alive",
+                                            species: "Human",
+                                            type: "None",
+                                            gender: "Male",
+                                            origin: originLocation,
+                                            location: currentLocation,
+                                            image: "",
+                                            episode: [],
+                                            url: "",
+                                            created: "")
+            
+            let viewModel = CharacterInfoViewModel(character: sampleCharacter, image: nil, episodes: [])
+            CharacterInfoView(viewModel: viewModel)
         }
     }
 }
