@@ -13,6 +13,7 @@ struct CharacterInfo: View {
     var characterName: String
     var characterImage: UIImage?
     var characterStatus: String
+    var backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -25,27 +26,76 @@ struct CharacterInfo: View {
             }
             Text("\(characterName)")
                 .font(.system(size: 25).bold())
+                .foregroundColor(.white)
             Text(characterStatus)
                 .foregroundColor(.green)
             
+            // MARK: - Info
+            
             Section(text: "Info")
+                .foregroundColor(.white)
             
             InfoRoundedRectangle(
                 height: 130,
                 cornerRadius: 10
             ) {
                 VStack(alignment: .leading, spacing: 10) {
-                    LabeledContent(label: "Species", value: "Human")
-                    LabeledContent(label: "Gender", value: "Male")
-                    LabeledContent(label: "Origin", value: "Earth")
+                    LabeledContent(label: "Species:", value: "Human")
+                    LabeledContent(label: "Gender:", value: "Male")
+                    LabeledContent(label: "Gender:", value: "Earth")
                 }
                 .padding()
             }
+            
+            // MARK: - Origin
+            
             Section(text: "Origin")
-            InfoRoundedRectangle(height: 140, cornerRadius: 10) {
-                LabeledContent(label: "Text", value: "Text2")
+                .foregroundColor(.white)
+            InfoRoundedRectangle(height: 80, cornerRadius: 10) {
+                HStack {
+                    Image("rick")
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Earth")
+                            .foregroundColor(.white)
+                        Text("Planet")
+                            .foregroundColor(.green)
+                            .font(.system(size: 14))
+                    }
+                    Spacer()
+                }
+                .padding()
             }
+            
+            // MARK: - Episodes
+            
+            Section(text: "Episodes")
+                .foregroundColor(.white)
+            
+            ForEach(0..<10) {_ in
+                InfoRoundedRectangle(height: 80, cornerRadius: 10) {
+                    VStack(alignment: .leading) {
+                        Text("Pilot")
+                            .foregroundColor(.white)
+                        Spacer()
+                        HStack {
+                            Text("Episode: 1, Season: 1")
+                                .foregroundColor(.green)
+                                .font(.system(size: 14))
+                            Spacer()
+                            Text("December 2, 2013")
+                                .foregroundColor(Color(.systemGray2))
+                                .font(.system(size: 14))
+                        }
+                    }
+                    .padding()
+                }
+            } .padding(5)
+            
         }
+        .background(Color(backColor))
     }
     
     struct LabeledContent: View {
@@ -55,9 +105,10 @@ struct CharacterInfo: View {
         var body: some View {
             HStack {
                 Text(label)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color(.systemGray4))
                 Spacer()
                 Text(value)
+                    .foregroundColor(.white)
             }
         }
     }
@@ -66,10 +117,10 @@ struct CharacterInfo: View {
         var height: CGFloat
         var cornerRadius: CGFloat
         @ViewBuilder var content: Content
-        
+        var color = #colorLiteral(red: 0.1510384381, green: 0.1641024947, blue: 0.2202236056, alpha: 1)
         var body: some View {
             RoundedRectangle(cornerRadius: cornerRadius)
-                .foregroundColor(Color(.systemGray6))
+                .foregroundColor(Color(color))
                 .frame(width: UIScreen.main.bounds.width - 40, height: height)
                 .overlay(content)
         }

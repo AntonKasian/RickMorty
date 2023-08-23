@@ -24,8 +24,9 @@ class CharactersListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = backColor
         self.title = "Characters"
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton

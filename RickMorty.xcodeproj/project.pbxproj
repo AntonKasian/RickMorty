@@ -16,6 +16,7 @@
 		3A13B3952A94CDA600545992 /* CharacterCardsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A13B3942A94CDA600545992 /* CharacterCardsVC.swift */; };
 		3A13B3982A94CE3D00545992 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A13B3972A94CE3D00545992 /* Model.swift */; };
 		3A13B39B2A94CF1A00545992 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A13B39A2A94CF1A00545992 /* Network.swift */; };
+		3A70D3DC2A95DBEF009C779B /* CharacterInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		3A13B3942A94CDA600545992 /* CharacterCardsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCardsVC.swift; sourceTree = "<group>"; };
 		3A13B3972A94CE3D00545992 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3A13B39A2A94CF1A00545992 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +66,7 @@
 			children = (
 				3A13B37E2A94C56000545992 /* AppDelegate.swift */,
 				3A13B3802A94C56000545992 /* SceneDelegate.swift */,
-				3A13B39A2A94CF1A00545992 /* Network.swift */,
+				3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */,
 				3A13B3992A94CE4300545992 /* Model */,
 				3A13B3962A94CE2000545992 /* View */,
 				3A13B3872A94C56100545992 /* Assets.xcassets */,
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				3A13B3972A94CE3D00545992 /* Model.swift */,
+				3A13B39A2A94CF1A00545992 /* Network.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 				3A13B37F2A94C56000545992 /* AppDelegate.swift in Sources */,
 				3A13B3812A94C56000545992 /* SceneDelegate.swift in Sources */,
 				3A13B3982A94CE3D00545992 /* Model.swift in Sources */,
+				3A70D3DC2A95DBEF009C779B /* CharacterInfoViewModel.swift in Sources */,
 				3A13B3932A94CC0100545992 /* CharacterInfo.swift in Sources */,
 				3A13B39B2A94CF1A00545992 /* Network.swift in Sources */,
 				3A13B3952A94CDA600545992 /* CharacterCardsVC.swift in Sources */,
