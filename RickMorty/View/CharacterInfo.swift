@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct CharacterInfo: View {
+    var backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
+    var planetColor = #colorLiteral(red: 0.09615487605, green: 0.1091408804, blue: 0.1651378274, alpha: 1)
     
-    @State var field = ""
+    //MARK: Main
     var characterName: String
     var characterImage: UIImage?
     var characterStatus: String
-    var backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
+    
+    //MARK: Info
+    var characterSpecies: String
+    var characterType: String?
+    var characterGender: String
+    
+    //MARK: Origin
+    var characterPlanet: String
+    var characterPlanetType: String?
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             if let image = characterImage {
-                Image(uiImage: image) // Используйте Image(uiImage:) для отображения UIImage
+                Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
@@ -40,9 +50,9 @@ struct CharacterInfo: View {
                 cornerRadius: 10
             ) {
                 VStack(alignment: .leading, spacing: 10) {
-                    LabeledContent(label: "Species:", value: "Human")
-                    LabeledContent(label: "Gender:", value: "Male")
-                    LabeledContent(label: "Gender:", value: "Earth")
+                    LabeledContent(label: "Species:", value: characterSpecies)
+                    LabeledContent(label: "Type:", value: characterType ?? "None")
+                    LabeledContent(label: "Gender:", value: characterGender)
                 }
                 .padding()
             }
@@ -53,20 +63,24 @@ struct CharacterInfo: View {
                 .foregroundColor(.white)
             InfoRoundedRectangle(height: 80, cornerRadius: 10) {
                 HStack {
-                    Image("rick")
-                        .resizable()
-                        .frame(width: 64, height: 64)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color(planetColor))
+                            .frame(width: 64, height: 64)
+                        Image("Planet1")
+                    }
+                    .padding(.trailing, 10)
                     
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Earth")
+                        Text(characterPlanet)
                             .foregroundColor(.white)
-                        Text("Planet")
+                        Text(characterPlanetType ?? "Planet")
                             .foregroundColor(.green)
                             .font(.system(size: 14))
                     }
                     Spacer()
                 }
-                .padding()
+                .padding(10)
             }
             
             // MARK: - Episodes
@@ -105,7 +119,7 @@ struct CharacterInfo: View {
         var body: some View {
             HStack {
                 Text(label)
-                    .foregroundColor(Color(.systemGray4))
+                    .foregroundColor(Color.gray)
                 Spacer()
                 Text(value)
                     .foregroundColor(.white)
@@ -142,7 +156,7 @@ struct CharacterInfo: View {
     
     struct CharacterInfo_Previews: PreviewProvider {
         static var previews: some View {
-            CharacterInfo(characterName: "Rick", characterStatus: "Alive")
+            CharacterInfo(characterName: "Rick", characterStatus: "Alive", characterSpecies: "Human", characterType: "None", characterGender: "Male", characterPlanet: "Earth", characterPlanetType: "Planet")
         }
     }
 }

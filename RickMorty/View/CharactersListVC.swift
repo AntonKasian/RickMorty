@@ -28,8 +28,23 @@ class CharactersListVC: UIViewController {
         
         view.backgroundColor = backColor
         self.title = "Characters"
+        
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton
+        
+        let appearanceWhite = UINavigationBarAppearance()
+        appearanceWhite.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+        
+        let appearanceDark = UINavigationBarAppearance()
+        appearanceDark.largeTitleTextAttributes = [
+            .foregroundColor: backColor
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearanceWhite
+        //navigationController?.navigationBar.scrollEdgeAppearance = appearanceDark
+        
         navigationController?.navigationBar.prefersLargeTitles = true
         view.addSubview(collectionView)
         setupCollectionView()
@@ -72,7 +87,14 @@ class CharactersListVC: UIViewController {
         URLSession.shared.dataTask(with: imageUrl) { data, response, error in
             if let data = data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    let characterInfoView = CharacterInfo(characterName: selectedCharacter.name, characterImage: image, characterStatus: selectedCharacter.status)
+                    let characterInfoView = CharacterInfo(characterName: selectedCharacter.name,
+                                                          characterImage: image,
+                                                          characterStatus: selectedCharacter.status,
+                                                          characterSpecies: selectedCharacter.species,
+                                                          characterType: selectedCharacter.type,
+                                                          characterGender: selectedCharacter.gender,
+                                                          characterPlanet: selectedCharacter.location.name,
+                                                          characterPlanetType: selectedCharacter.location.type)
                     let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
                     self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
                 }
