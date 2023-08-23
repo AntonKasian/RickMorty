@@ -22,52 +22,38 @@ class CharactersListVC: UIViewController {
         return collectionView
     }()
     
+    private let networkManager = NetworkManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
-        
-        view.backgroundColor = backColor
-        self.title = "Characters"
-        
-        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backButton
-        
-        let appearanceWhite = UINavigationBarAppearance()
-        appearanceWhite.largeTitleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        
-        let appearanceDark = UINavigationBarAppearance()
-        appearanceDark.largeTitleTextAttributes = [
-            .foregroundColor: backColor
-        ]
-        
-        navigationController?.navigationBar.standardAppearance = appearanceWhite
-        //navigationController?.navigationBar.scrollEdgeAppearance = appearanceDark
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        view.addSubview(collectionView)
-        setupCollectionView()
-        
-        let networkManager = NetworkManager()
-
-        networkManager.fetchCharacters { result in
-            switch result {
-            case .success(let characters):
-                DispatchQueue.main.async {
-                    self.characters = characters
-                    self.collectionView.reloadData()
-                    print("Data is ok")
-                }
-            case .failure(let error):
-                print("Error fetching characters: \(error)")
-            }
-        }
+        configureUI()
+        fetchCharacters()
     }
+    
+    // MARK: - UI
+    
+    private func configureUI() {
+            view.backgroundColor = #colorLiteral(red: 0.01487923693, green: 0.04629518837, blue: 0.1187677309, alpha: 1)
+            self.title = "Characters"
+            
+            let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem = backButton
+            
+            let appearanceWhite = UINavigationBarAppearance()
+            appearanceWhite.largeTitleTextAttributes = [
+                .foregroundColor: UIColor.white
+            ]
+            
+            navigationController?.navigationBar.standardAppearance = appearanceWhite
+            navigationController?.navigationBar.prefersLargeTitles = true
+            
+            view.addSubview(collectionView)
+            setupCollectionView()
+        }
     
     func setupCollectionView() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -25),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -78,6 +64,23 @@ class CharactersListVC: UIViewController {
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
         collectionView.showsVerticalScrollIndicator = false
     }
+    
+    // MARK: - Network
+    
+    private func fetchCharacters() {
+            networkManager.fetchCharacters { result in
+                switch result {
+                case .success(let characters):
+                    DispatchQueue.main.async {
+                        self.characters = characters
+                        self.collectionView.reloadData()
+                        print("Data is ok")
+                    }
+                case .failure(let error):
+                    print("Error fetching characters: \(error)")
+                }
+            }
+        }
     
     func loadCharacterInfoAndPushToView(selectedCharacter: Character) {
         guard let imageUrl = URL(string: selectedCharacter.image) else {
@@ -127,40 +130,9 @@ class CharactersListVC: UIViewController {
             }
         }.resume()
     }
-
-
 }
 
 
-extension CharactersListVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characters.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as! CharacterCollectionViewCell
-        
-        let character = characters[indexPath.item]
-        // Загрузка изображения из сети
-        if let imageUrl = URL(string: character.image) {
-            URLSession.shared.dataTask(with: imageUrl) { data, response, error in
-                if let data = data, let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        cell.characterImageView.image = image
-                    }
-                }
-            }.resume()
-        }
-        cell.characterNameLabel.text = character.name
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCharacter = characters[indexPath.item]
-        loadCharacterInfoAndPushToView(selectedCharacter: selectedCharacter)
-    }
-}
+
 
 

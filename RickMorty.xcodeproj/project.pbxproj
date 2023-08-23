@@ -17,6 +17,10 @@
 		3A13B3982A94CE3D00545992 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A13B3972A94CE3D00545992 /* Model.swift */; };
 		3A13B39B2A94CF1A00545992 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A13B39A2A94CF1A00545992 /* Network.swift */; };
 		3A70D3DC2A95DBEF009C779B /* CharacterInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */; };
+		3A8897092A95F6E10016AEC4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8897082A95F6E10016AEC4 /* Extensions.swift */; };
+		3A88970C2A95F7390016AEC4 /* LabeledContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88970B2A95F7390016AEC4 /* LabeledContent.swift */; };
+		3A88970E2A95F7670016AEC4 /* InfoRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88970D2A95F7670016AEC4 /* InfoRoundedRectangle.swift */; };
+		3A8897102A95F7980016AEC4 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A88970F2A95F7980016AEC4 /* Section.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		3A13B3972A94CE3D00545992 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		3A13B39A2A94CF1A00545992 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoViewModel.swift; sourceTree = "<group>"; };
+		3A8897082A95F6E10016AEC4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3A88970B2A95F7390016AEC4 /* LabeledContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledContent.swift; sourceTree = "<group>"; };
+		3A88970D2A95F7670016AEC4 /* InfoRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRoundedRectangle.swift; sourceTree = "<group>"; };
+		3A88970F2A95F7980016AEC4 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +75,7 @@
 				3A13B37E2A94C56000545992 /* AppDelegate.swift */,
 				3A13B3802A94C56000545992 /* SceneDelegate.swift */,
 				3A70D3DB2A95DBEF009C779B /* CharacterInfoViewModel.swift */,
+				3A88970A2A95F7030016AEC4 /* Extensions */,
 				3A13B3992A94CE4300545992 /* Model */,
 				3A13B3962A94CE2000545992 /* View */,
 				3A13B3872A94C56100545992 /* Assets.xcassets */,
@@ -82,6 +91,9 @@
 				3A13B3822A94C56000545992 /* CharactersListVC.swift */,
 				3A13B3942A94CDA600545992 /* CharacterCardsVC.swift */,
 				3A13B3922A94CC0100545992 /* CharacterInfo.swift */,
+				3A88970F2A95F7980016AEC4 /* Section.swift */,
+				3A88970D2A95F7670016AEC4 /* InfoRoundedRectangle.swift */,
+				3A88970B2A95F7390016AEC4 /* LabeledContent.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -93,6 +105,14 @@
 				3A13B39A2A94CF1A00545992 /* Network.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3A88970A2A95F7030016AEC4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3A8897082A95F6E10016AEC4 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,11 +186,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A13B3832A94C56000545992 /* CharactersListVC.swift in Sources */,
+				3A88970E2A95F7670016AEC4 /* InfoRoundedRectangle.swift in Sources */,
+				3A8897092A95F6E10016AEC4 /* Extensions.swift in Sources */,
 				3A13B37F2A94C56000545992 /* AppDelegate.swift in Sources */,
+				3A88970C2A95F7390016AEC4 /* LabeledContent.swift in Sources */,
 				3A13B3812A94C56000545992 /* SceneDelegate.swift in Sources */,
 				3A13B3982A94CE3D00545992 /* Model.swift in Sources */,
 				3A70D3DC2A95DBEF009C779B /* CharacterInfoViewModel.swift in Sources */,
 				3A13B3932A94CC0100545992 /* CharacterInfo.swift in Sources */,
+				3A8897102A95F7980016AEC4 /* Section.swift in Sources */,
 				3A13B39B2A94CF1A00545992 /* Network.swift in Sources */,
 				3A13B3952A94CDA600545992 /* CharacterCardsVC.swift in Sources */,
 			);
