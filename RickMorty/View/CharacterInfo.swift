@@ -25,6 +25,9 @@ struct CharacterInfo: View {
     var characterPlanet: String
     var characterPlanetType: String?
     
+    //MARK: Episodes
+    var episodes: [Episode] = []
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             if let image = characterImage {
@@ -51,7 +54,11 @@ struct CharacterInfo: View {
             ) {
                 VStack(alignment: .leading, spacing: 10) {
                     LabeledContent(label: "Species:", value: characterSpecies)
-                    LabeledContent(label: "Type:", value: characterType ?? "None")
+                    if characterType == "" {
+                        LabeledContent(label: "Type:", value: "None")
+                    } else {
+                        LabeledContent(label: "Type:", value: characterType ?? "None")
+                    }
                     LabeledContent(label: "Gender:", value: characterGender)
                 }
                 .padding()
@@ -88,18 +95,26 @@ struct CharacterInfo: View {
             Section(text: "Episodes")
                 .foregroundColor(.white)
             
-            ForEach(0..<10) {_ in
+            ForEach(episodes) {episode in
                 InfoRoundedRectangle(height: 80, cornerRadius: 10) {
                     VStack(alignment: .leading) {
-                        Text("Pilot")
+                        Text(episode.name)
                             .foregroundColor(.white)
                         Spacer()
                         HStack {
-                            Text("Episode: 1, Season: 1")
-                                .foregroundColor(.green)
-                                .font(.system(size: 14))
+                            let episodeCode = episode.episode
+                            let components = episodeCode.split(separator: "E")
+
+                            if components.count == 2,
+                               let seasonNumber = Int(components[0].dropFirst()),
+                               let episodeNumber = Int(components[1]) {
+                                let formattedEpisode = "Episode: \(episodeNumber), Season: \(seasonNumber)"
+                                Text(formattedEpisode)
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 14))
+                            }
                             Spacer()
-                            Text("December 2, 2013")
+                            Text(episode.air_date)
                                 .foregroundColor(Color(.systemGray2))
                                 .font(.system(size: 14))
                         }
@@ -152,6 +167,7 @@ struct CharacterInfo: View {
             }
         }
     }
+
     
     
     struct CharacterInfo_Previews: PreviewProvider {

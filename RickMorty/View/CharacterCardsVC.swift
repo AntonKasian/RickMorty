@@ -9,6 +9,8 @@ import UIKit
 
 class CharacterCollectionViewCell: UICollectionViewCell {
     
+    let cardColor = #colorLiteral(red: 0.1510384381, green: 0.1641024947, blue: 0.2202236056, alpha: 1)
+    
     let characterImageView: UIImageView = {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
@@ -21,7 +23,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         let characterNameLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-            label.textColor = .black
+            label.textColor = .white
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -45,7 +47,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
                 characterNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
             ])
             
-            self.backgroundColor = .systemGray
+            self.backgroundColor = cardColor
             self.layer.cornerRadius = 20
         }
 

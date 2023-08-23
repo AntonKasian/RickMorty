@@ -87,21 +87,50 @@ class CharactersListVC: UIViewController {
         URLSession.shared.dataTask(with: imageUrl) { data, response, error in
             if let data = data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    let characterInfoView = CharacterInfo(characterName: selectedCharacter.name,
-                                                          characterImage: image,
-                                                          characterStatus: selectedCharacter.status,
-                                                          characterSpecies: selectedCharacter.species,
-                                                          characterType: selectedCharacter.type,
-                                                          characterGender: selectedCharacter.gender,
-                                                          characterPlanet: selectedCharacter.location.name,
-                                                          characterPlanetType: selectedCharacter.location.type)
-                    let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
-                    self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
+                    let episodeURLs = selectedCharacter.episode.map { URL(string: $0) }
+                    let episodeLoadGroup = DispatchGroup()
+                    var episodes: [Episode] = []
+
+                    for episodeURL in episodeURLs {
+                        if let episodeURL = episodeURL {
+                            episodeLoadGroup.enter()
+                            URLSession.shared.dataTask(with: episodeURL) { data, _, _ in
+                                if let data = data {
+                                    do {
+                                        let episode = try JSONDecoder().decode(Episode.self, from: data)
+                                        episodes.append(episode)
+                                    } catch {
+                                        print("Error decoding episode data: \(error)")
+                                    }
+                                }
+                                episodeLoadGroup.leave()
+                            }.resume()
+                        }
+                    }
+
+                    episodeLoadGroup.notify(queue: DispatchQueue.main) {
+                        let characterInfoView = CharacterInfo(
+                            characterName: selectedCharacter.name,
+                            characterImage: image,
+                            characterStatus: selectedCharacter.status,
+                            characterSpecies: selectedCharacter.species,
+                            characterType: selectedCharacter.type,
+                            characterGender: selectedCharacter.gender,
+                            characterPlanet: selectedCharacter.location.name,
+                            characterPlanetType: selectedCharacter.location.type,
+                            episodes: episodes
+                        )
+                        let characterInfoHostingController = UIHostingController(rootView: characterInfoView)
+                        self.navigationController?.pushViewController(characterInfoHostingController, animated: true)
+                    }
                 }
             }
         }.resume()
     }
+
+
 }
+
 
 extension CharactersListVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
